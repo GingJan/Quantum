@@ -19,16 +19,43 @@ class QuantumServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->registerCommand();
+        $this->registerCommands();
+        $this->registerResources();
         $this->registerAccessPolicy();
     }
 
     /**
-     * register all command
+     * Register resources.
      *
      * @return void
      */
-    protected function registerCommand()
+    protected function registerResources()
+    {
+        $resources = config('config.resource');
+
+        foreach ($resources as $resource => $src) {
+            $this->app->alias($src, $resources);
+        }
+    }
+
+    protected function registerRepositories()
+    {
+        if (!config('config.service.repository.enabled')) return;
+
+        $repositories = config('config.service.repository.mapping');
+
+        foreach ($repositories as $repository => $src) {
+            $this->app->alias($src, );
+        }
+
+    }
+
+    /**
+     * Register all commands.
+     *
+     * @return void
+     */
+    protected function registerCommands()
     {
         $this->commands(MigrationGenerateCommand::class);//register command
     }
@@ -40,6 +67,11 @@ class QuantumServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * Register policy.
+     *
+     * @return void
+     */
     protected function registerAccessPolicy()
     {
         Gate::before(function ($user, $uri, $method) {
@@ -56,9 +88,11 @@ class QuantumServiceProvider extends ServiceProvider
 
                     if ($perm->uri == $uri && $perm->verb == $method) {
 
-                            if ($perm::TYPE_PRIVATE == $perm->type) {
-                                return app($resource)->find(1, [config('config.database.fields.owner')])->owner_id == $user->id;
-                            }
+                        if ($perm::ACCESS_PRIVATE == $perm->access_level) {
+                            $ownerField = config('config.database.fields.owner');
+                            app($resource)
+                            return app($resource)->find(, [$ownerField])->$ownerField == $user->getAuthIdentifier();
+                        }
                         return true;
                     }
                 }
