@@ -9,6 +9,10 @@ class Permission extends Quantum implements PermissionContract
 {
     const STATUS_CLOSING = 0;
     const STATUS_OPENING = 1;
+
+    const ACCESS_PUBLIC = 10;
+    const ACCESS_PROTECTED = 20;
+    const ACCESS_PRIVATE = 30;
     /**
      * The Permission table.
      *
