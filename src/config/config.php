@@ -21,26 +21,58 @@ return [
 
     ],
 
+    'service' => [
+        /*
+         * Cache Config
+         */
+        'cache' => [
+            /*
+             * Enable or disable cache
+             */
+            'enabled' => true,
+
+            /*
+             * Time of expiration cache (minutes)
+             */
+            'minutes' => 60,
+        ],
+
+        /*
+         * Repository Config
+         */
+        'repository' => [
+            /*
+             * Enable or disable cache
+             */
+            'enabled' => true,
+            /*
+             * mapping config
+             */
+            'mapping' => [
+//        'resource' => 'repository'
+                'articles' => Zjien\QuantumDemo\Repositories\ArticleRepository::class,
+            ],
+
+        ],
+
+    ],
+
     /*
-     * Model Config
+     * Resource Config
+     * Ex. articles resource mapping to app\Models\Article model.
+     */
+    'resource' => [
+//        'alias' => 'abstract'
+//        'articles' => Zjien\QuantumDemo\Models\Article::class,
+    ],
+
+    /*
+     * Role, Permission Model Config
      */
     'model' => [
         'role'       => Zjien\Quantum\Models\Role::class,
         'permission' => Zjien\Quantum\Models\Permission::class,
     ],
 
-    /*
-     * Cache Config
-     */
-    'cache' => [
-        /*
-         * Enable or disable cache
-         */
-        'enabled' => true,
 
-        /*
-         * Time of expiration cache (minutes)
-         */
-        'minutes' => 60,
-    ]
 ];
