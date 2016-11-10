@@ -31,11 +31,10 @@ class QuantumAccess
             throw new UnauthorizedHttpException('');
         }
 
-        $uri = $this->getResourceUri($request);
+        $resource = $this->getResourceUri($request);
         $method = $request->getMethod();
-//        $account_id = $this->auth->user()->getAuthIdentifier();
 
-        if (!Gate::check($uri, $method)) {
+        if (!Gate::check($resource['uri'], $method)) {
             throw new AccessDeniedHttpException();
         }
 
@@ -43,9 +42,10 @@ class QuantumAccess
     }
 
     /**
-     * 获取资源的uri
+     * Get the resource uri for the request.
+     *
      * @param \Illuminate\Http\Request $request
-     * @return string $resourceUri
+     * @return array $resource
      */
     protected function getResourceUri($request) {
         $uri = $request->getPathInfo();
@@ -53,14 +53,17 @@ class QuantumAccess
 
         $segment = explode('/', $uri);
 
-        if(count($segment) % 2 === 1) {//如果是奇数个，则是访问列表
-            $resource = end($segment);
-        } else {//否则就是访问指定某个资源
-            end($segment);//id
-            $resource = prev($segment) . '/{id}';
+        $resource = [];
+        if(count($segment) % 2 === 1) {
+            $resource['uri'] = array_pop($segment);
+            $resource['id'] = array_slice($segment, -2);
+        } else {
+            $resource['id'] = [array_pop($segment)];//id
+            $resource['uri'] = array_pop($segment) . '/{id}';
         }
+        $resource['uri'] = '/' . $resource['uri'];
 
-        return '/' . $resource;
+        return $resource;
     }
 
 }
