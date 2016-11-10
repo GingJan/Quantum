@@ -3,6 +3,7 @@ namespace Zjien\Quantum\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zjien\Quantum\Generator\Command\MigrationGenerateCommand;
 
 class QuantumServiceProvider extends ServiceProvider
@@ -20,34 +21,7 @@ class QuantumServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerCommands();
-        $this->registerResources();
         $this->registerAccessPolicy();
-    }
-
-    /**
-     * Register resources.
-     *
-     * @return void
-     */
-    protected function registerResources()
-    {
-        $resources = config('config.resource');
-
-        foreach ($resources as $resource => $src) {
-            $this->app->alias($src, $resources);
-        }
-    }
-
-    protected function registerRepositories()
-    {
-        if (!config('config.service.repository.enabled')) return;
-
-        $repositories = config('config.service.repository.mapping');
-
-        foreach ($repositories as $repository => $src) {
-            $this->app->alias($src, );
-        }
-
     }
 
     /**
@@ -60,13 +34,6 @@ class QuantumServiceProvider extends ServiceProvider
         $this->commands(MigrationGenerateCommand::class);//register command
     }
 
-    protected function registerQuantum()
-    {
-        $this->app->singleton('quantum', function ($app) {
-//            return
-        });
-    }
-
     /**
      * Register policy.
      *
@@ -77,24 +44,12 @@ class QuantumServiceProvider extends ServiceProvider
         Gate::before(function ($user, $uri, $method) {
             $roles = $user->roles;
 
-            $resource = explode('/', trim($uri, '/'))[0];
-
             foreach ($roles as $role) {
                 $permissions = $role->permissions;
                 foreach ($permissions as $perm) {
-                    if ($perm::TYPE_PUBLIC == $perm->type) return true;
+                    if ($perm::STATUS_CLOSING == $perm->status) throw new NotFoundHttpException();
 
-                    if ($perm->status == $perm::STATUS_CLOSING) return false;
-
-                    if ($perm->uri == $uri && $perm->verb == $method) {
-
-                        if ($perm::ACCESS_PRIVATE == $perm->access_level) {
-                            $ownerField = config('config.database.fields.owner');
-                            app($resource)
-                            return app($resource)->find(, [$ownerField])->$ownerField == $user->getAuthIdentifier();
-                        }
-                        return true;
-                    }
+                    if ($perm->uri == $uri && $perm->verb == $method) return true;
                 }
             }
 
