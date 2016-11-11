@@ -96,7 +96,8 @@ class User extends Quantum implements UserContract
      */
     public function can($permissions, $all = false)
     {
-        $permissions = static::normalize($permissions);
+        $permissions = Permission::whereIn('name', $permissions)->get(['id'])->toArray();
+        $permissions = array_flatten($permissions);
 
         $userPermissions = [];
 
@@ -128,7 +129,8 @@ class User extends Quantum implements UserContract
      */
     public function is($roles, $all = false)
     {
-        $roles = static::normalize($roles);
+        $roles = Role::whereIn('name', $roles)->get(['id'])->toArray();
+        $roles = array_flatten($roles);
 
         $userRoles = $this->roles;
 

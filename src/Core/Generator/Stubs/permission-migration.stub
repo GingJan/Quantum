@@ -18,7 +18,6 @@ class CreateQuantumPermissionsTable extends Migration
             $table->string('name', 63)->unique();
             $table->string('verb',10);//Ex: GET/POST/PUT/PATCH/DELETE
             $table->string('uri', 255);//the resource uri
-            $table->unsignedTinyInteger('access_level');//the resource access level, Ex: private(owner accessible), protected(role accessible), public
             $table->boolean('status')->default(0);//the resource is closing / opening access
             $table->string('display_name', 63)->default('');
             $table->string('description', 255)->default('');
