@@ -3,7 +3,7 @@ namespace Zjien\Quantum\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class QuantumFacade extends Facade
+class Quantum extends Facade
 {
     /**
      * Get the registered name of the component.

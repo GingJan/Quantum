@@ -4,9 +4,9 @@ namespace tecai\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Zjien\Quantum\Facades\Quantum;
 
 class QuantumAccess
 {
@@ -34,7 +34,7 @@ class QuantumAccess
         $resource = $this->getResourceUri($request);
         $method = $request->getMethod();
 
-        if (!Gate::check($resource['uri'], $method)) {
+        if (!Quantum::check($resource['uri'], $method)) {
             throw new AccessDeniedHttpException();
         }
 
