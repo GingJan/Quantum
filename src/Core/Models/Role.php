@@ -3,6 +3,7 @@ namespace Zjien\Quantum\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 use Zjien\Quantum\Contracts\RoleContract;
 
 class Role extends Quantum implements RoleContract
@@ -17,7 +18,7 @@ class Role extends Quantum implements RoleContract
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = config('config.database.role');
+        $this->table = Config::get('config.database.role');
     }
 
     /**
@@ -43,7 +44,7 @@ class Role extends Quantum implements RoleContract
      */
     public function users()
     {
-        return $this->belongsToMany(config('auth.model'), config('config.database.tables.user_role_relation'));
+        return $this->belongsToMany(Config::get('auth.model'), Config::get('config.database.tables.user_role_relation'));
     }
 
     /**
@@ -53,7 +54,7 @@ class Role extends Quantum implements RoleContract
      */
     public function permissions()
     {
-        return $this->belongsToMany(config('config.model.permission'), config('config.database.tables.role_permission_relation'));
+        return $this->belongsToMany(Config::get('config.model.permission'), Config::get('config.database.tables.role_permission_relation'));
     }
 
     /**

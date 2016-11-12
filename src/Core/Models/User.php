@@ -3,6 +3,7 @@ namespace Zjien\Quantum\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 use Zjien\Quantum\Contracts\UserContract;
 
 class User extends Quantum implements UserContract
@@ -17,7 +18,7 @@ class User extends Quantum implements UserContract
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = config('auth.table');
+        $this->table = Config::get('auth.table');
     }
 
     /**
@@ -41,7 +42,7 @@ class User extends Quantum implements UserContract
      */
     public function roles()
     {
-        return $this->belongsToMany(config('quantum.model.role'), config('quantum.database.tables.user_role_relation'));
+        return $this->belongsToMany(Config::get('quantum.model.role'), Config::get('quantum.database.tables.user_role_relation'));
     }
 
     /**

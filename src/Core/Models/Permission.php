@@ -1,8 +1,7 @@
 <?php
 namespace Zjien\Quantum\Models;
 
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 use Zjien\Quantum\Contracts\PermissionContract;
 
 class Permission extends Quantum implements PermissionContract
@@ -22,7 +21,7 @@ class Permission extends Quantum implements PermissionContract
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = config('config.database.tables.permission');
+        $this->table = Config::get('config.database.tables.permission');
     }
 
     /**
@@ -45,6 +44,6 @@ class Permission extends Quantum implements PermissionContract
      */
     public function roles()
     {
-        return $this->belongsToMany(config('config.model.role'), config('config.database.tables.user_role_relation'));
+        return $this->belongsToMany(Config::get('config.model.role'), Config::get('config.database.tables.user_role_relation'));
     }
 }
