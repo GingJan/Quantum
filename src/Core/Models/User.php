@@ -42,7 +42,7 @@ class User extends Quantum implements UserContract
      */
     public function roles()
     {
-        return $this->belongsToMany(Config::get('quantum.model.role'), Config::get('quantum.database.tables.user_role_relation'));
+        return $this->belongsToMany(Config::get('quantum.model.role'), Config::get('quantum.database.tables.user_role_relation'), 'user_id', 'role_id');
     }
 
     /**
