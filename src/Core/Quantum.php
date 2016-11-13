@@ -27,12 +27,6 @@ class Quantum
      * @param string $uri
      * @param string $method
      * @return bool
-     */
-
-    /**
-     * @param $uri
-     * @param $method
-     * @return bool
      * @throws bool|UnauthorizedHttpException|NotFoundHttpException
      */
     public function check($uri, $method)
