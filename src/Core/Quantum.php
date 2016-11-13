@@ -75,15 +75,21 @@ class Quantum
         $result = [];
 
         if ($value instanceof Collection) {
-            foreach ($value as $val) {
-                $result[] = $val->getKey();
+            foreach ($value as $model) {
+                $result[] = $model->getKey();
             }
         } else if ($value instanceof Model) {
             $result = [$value->getKey()];
         } else if (!is_array($value)) {
             $result = [$value];
         } else {
-            $result = $value;
+            if(current($value) instanceof Model) {
+                foreach ($value as $model) {
+                    $result[] = $model->getKey();
+                }
+            } else {
+                $result = $value;
+            }
         }
 
         return $result;
