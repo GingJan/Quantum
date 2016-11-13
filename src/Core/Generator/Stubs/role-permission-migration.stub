@@ -13,7 +13,7 @@ class CreateQuantumUsersRolesTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('user_role', function(Blueprint $table) {
+		Schema::create('role_permission', function(Blueprint $table) {
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('role_id');
             $table->primary(['user_id', 'role_id']);
@@ -27,7 +27,7 @@ class CreateQuantumUsersRolesTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('user_role');
+		Schema::drop('role_permission');
 	}
 
 }
