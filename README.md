@@ -1,4 +1,7 @@
 # Quantum
+
+[![Build Status](https://travis-ci.org/zjien/Quantum.svg?branch=master)](https://travis-ci.org/zjien/Quantum)
+
 Quantum是个基于RESTful API的RBAC Laravel扩展包
 
 ## Contents
