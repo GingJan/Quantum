@@ -1,6 +1,8 @@
 <?php
 namespace Zjien\Quantum;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -60,6 +62,31 @@ class Quantum
     public function user()
     {
         return $this->app->auth->user();
+    }
+
+    /**
+     * Normalize the params.
+     *
+     * @param array|Model|Collection $value
+     * @return array
+     */
+    public static function normalize($value)
+    {
+        $result = [];
+
+        if ($value instanceof Collection) {
+            foreach ($value as $val) {
+                $result[] = $val->getKey();
+            }
+        } else if ($value instanceof Model) {
+            $result = [$value->getKey()];
+        } else if (!is_array($value)) {
+            $result = [$value];
+        } else {
+            $result = $value;
+        }
+
+        return $result;
     }
 
 }
