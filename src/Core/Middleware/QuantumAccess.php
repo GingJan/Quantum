@@ -1,6 +1,6 @@
 <?php
 
-namespace tecai\Http\Middleware;
+namespace Zjien\Quantum\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;

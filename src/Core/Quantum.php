@@ -1,9 +1,11 @@
 <?php
 namespace Zjien\Quantum;
 
-use Illuminate\Auth\Access\UnauthorizedException;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class Quantum
 {
@@ -27,19 +29,13 @@ class Quantum
      * @param string $uri
      * @param string $method
      * @return bool
-     */
-
-    /**
-     * @param $uri
-     * @param $method
-     * @return bool
-     * @throws bool|UnauthorizedException|NotFoundHttpException
+     * @throws bool|UnauthorizedHttpException|NotFoundHttpException
      */
     public function check($uri, $method)
     {
         $user = $this->user();
         if (!$user) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedHttpException('');
         }
 
         $roles = $user->roles;
@@ -67,4 +63,30 @@ class Quantum
     {
         return $this->app->auth->user();
     }
+
+    /**
+     * Normalize the params.
+     *
+     * @param array|Model|Collection $value
+     * @return array
+     */
+    public static function normalize($value)
+    {
+        $result = [];
+
+        if ($value instanceof Collection) {
+            foreach ($value as $val) {
+                $result[] = $val->getKey();
+            }
+        } else if ($value instanceof Model) {
+            $result = [$value->getKey()];
+        } else if (!is_array($value)) {
+            $result = [$value];
+        } else {
+            $result = $value;
+        }
+
+        return $result;
+    }
+
 }

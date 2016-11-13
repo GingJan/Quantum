@@ -40,35 +40,35 @@ class MigrationGenerateCommand extends GeneratorCommand
         $this->generateUsersRolesMigration();
     }
 
-    protected function generateRolesMigration()
+    protected function generatePermissionsMigration()
     {
-        $this->targetFile = database_path('/migrations') . '/' . date('Y_m_d_His') . '_create_quantum_roles_tables.php';
-        $this->type = 'Roles Migration';
-        $this->stub = '/role-migration.stub';
+        $this->targetFile = database_path('/migrations') . '/' . date('Y_m_d_His') . '_create_quantum_permissions_table.php';
+        $this->type = 'Permissions Migration';
+        $this->stub = $this->stubPath .'/permission-migration.stub';
         return parent::fire();
     }
 
-    protected function generatePermissionsMigration()
+    protected function generateRolesMigration()
     {
-        $this->targetFile = database_path('/migrations') . '/' . date('Y_m_d_His') . '_create_quantum_permissions_tables.php';
-        $this->type = 'Permissions Migration';
-        $this->stub = '/permission-migration.stub';
+        $this->targetFile = database_path('/migrations') . '/' . date('Y_m_d_His') . '_create_quantum_roles_table.php';
+        $this->type = 'Roles Migration';
+        $this->stub = $this->stubPath . '/role-migration.stub';
         return parent::fire();
     }
 
     protected function generateRolesPermissionsMigration()
     {
-        $this->targetFile = database_path('/migrations') . '/' . date('Y_m_d_His') . '_create_quantum_roles_permissions_tables.php';
+        $this->targetFile = database_path('/migrations') . '/' . date('Y_m_d_His') . '_create_quantum_roles_permissions_table.php';
         $this->type = 'Roles_Permissions Migration';
-        $this->stub = '/role-permission-migration.stub';
+        $this->stub = $this->stubPath .'/role-permission-migration.stub';
         return parent::fire();
     }
 
     protected function generateUsersRolesMigration()
     {
-        $this->targetFile = database_path('/migrations') . '/' . date('Y_m_d_His') . '_create_quantum_users_roles_tables.php';
+        $this->targetFile = database_path('/migrations') . '/' . date('Y_m_d_His') . '_create_quantum_users_roles_table.php';
         $this->type = 'Users_Roles Migration';
-        $this->stub = '/user-role-migration.stub';
+        $this->stub = $this->stubPath .'/user-role-migration.stub';
         return parent::fire();
     }
 
@@ -84,6 +84,26 @@ class MigrationGenerateCommand extends GeneratorCommand
     protected function getPath($name)
     {
         return $this->targetFile;
+    }
+
+    /**
+     * Get the desired class name from the input.
+     *
+     * @return string
+     */
+    protected function getNameInput()
+    {
+        return '';
+    }
+
+    /**
+     * Get the console command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments()
+    {
+        return [];
     }
 
 }

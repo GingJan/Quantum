@@ -3,6 +3,7 @@ namespace Zjien\Quantum\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Zjien\Quantum\Generator\Command\MigrationGenerateCommand;
+use Zjien\Quantum\Quantum;
 
 class QuantumServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,9 @@ class QuantumServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerCommands();
+        $this->app->singleton('quantum', function($app){
+            return new Quantum($app);
+        });
     }
 
     /**
