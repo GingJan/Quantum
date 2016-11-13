@@ -10,10 +10,6 @@ class UserTest extends PHPUnit_Framework_TestCase
         Config::setFacadeApplication($app);
         Config::swap($config);
 
-        Config::shouldReceive('get')
-            ->with('auth.table')
-            ->andReturn('user_table')
-            ->once();
     }
     public function tearDown()
     {

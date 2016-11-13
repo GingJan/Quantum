@@ -71,7 +71,7 @@ class QuantumTest extends PHPUnit_Framework_TestCase
         try {
             $this->assertFalse($quantum->check('/whatever', 'POST'));
         } catch (Exception $e) {
-            $this->assertInstanceOf('Illuminate\Auth\Access\UnauthorizedException', $e);
+            $this->assertInstanceOf('Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException', $e);
         }
 
     }
