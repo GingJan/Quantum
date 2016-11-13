@@ -31,7 +31,7 @@ trait RoleTrait
      */
     public function users()
     {
-        return $this->belongsToMany(Config::get('auth.model'), Config::get('config.database.tables.user_role_relation'), 'role_id', 'user_id');
+        return $this->belongsToMany(Config::get('auth.model'), Config::get('quantum.database.tables.user_role_relation'), 'role_id', 'user_id');
     }
 
     /**
@@ -41,7 +41,7 @@ trait RoleTrait
      */
     public function permissions()
     {
-        return $this->belongsToMany(Config::get('config.model.permission'), Config::get('config.database.tables.role_permission_relation'));
+        return $this->belongsToMany(Config::get('quantum.model.permission'), Config::get('quantum.database.tables.role_permission_relation'), 'role_id', 'permission_id');
     }
 
     /**
@@ -94,7 +94,7 @@ trait RoleTrait
      */
     public function detachAllUsers()
     {
-        return $this->user()->detach();
+        return $this->users()->detach();
     }
 
 }

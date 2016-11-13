@@ -26,6 +26,6 @@ trait PermissionTrait
      */
     public function roles()
     {
-        return $this->belongsToMany(Config::get('config.model.role'), Config::get('config.database.tables.user_role_relation'), 'permission_id', 'role_id');
+        return $this->belongsToMany(Config::get('quantum.model.role'), Config::get('quantum.database.tables.role_permission_relation'), 'permission_id', 'role_id');
     }
 }

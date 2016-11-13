@@ -86,25 +86,22 @@ trait UserTrait
      */
     public function can($permissions, $all = false)
     {
-        $permissions = Permission::whereIn('name', $permissions)->get(['id'])->toArray();
-        $permissions = array_flatten($permissions);
+        $permissions = is_array($permissions) ? $permissions : [$permissions];
+        $permissions_id = Permission::whereIn('name', $permissions)->get(['id'])->toArray();
+
+        $permissions_id = array_flatten($permissions_id);
 
         $userPermissions = [];
-
         foreach ($this->roles as $role) {
-            $userPermissions[] = $role->permissions;
+            $userPermissions = array_merge($userPermissions, $role->permissions->all());
         }
-
-        //waiting for testing
-        $userPermissions = array_flatten($userPermissions);
-
-        $userPermissions = array_map(function($userPermission) {
+        $userPermissions = array_map(function ($userPermission) {
             return $userPermission->getKey();
         }, $userPermissions);
 
-        $result = array_intersect($userPermissions, $permissions);
+        $result = array_intersect($userPermissions, $permissions_id);
 
-        if ($all && count($result) != count($permissions))
+        if ($all && (count($result) != count($permissions)))
             return false;
 
         return !empty($result);
@@ -119,18 +116,19 @@ trait UserTrait
      */
     public function is($roles, $all = false)
     {
-        $roles = Role::whereIn('name', $roles)->get(['id'])->toArray();
-        $roles = array_flatten($roles);
+        $roles = is_array($roles) ? $roles : [$roles];
+        $roles_id = Role::whereIn('name', $roles)->get(['id'])->toArray();
+        $roles_id = array_flatten($roles_id);
 
-        $userRoles = $this->roles;
+        $userRoles = $this->roles->all();
 
-        $userRoles = array_map(function($userRole) {
+        $userRoles = array_map(function ($userRole) {
             return $userRole->getkey();
         }, $userRoles);
 
-        $result = array_intersect($userRoles, $roles);
+        $result = array_intersect($userRoles, $roles_id);
 
-        if ($all && count($result) != count($userRoles))
+        if ($all && (count($result) != count($roles)))
             return false;
 
         return !empty($result);
@@ -146,7 +144,7 @@ trait UserTrait
     {
         $can = $this->can($permissions, $all);
         $is = $this->is($roles, $all);
-        return $all? $can && $is : $can || $is;
+        return $all ? $can && $is : $can || $is;
     }
 
 }
