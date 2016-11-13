@@ -4,4 +4,7 @@ php:
 
 before_script:
   - composer self-update
-  - composer update --no-interaction --dev
+  - composer install --prefer-source --no-interaction --dev
+
+script:
+  - vendor/bin/phpunit --verbose
