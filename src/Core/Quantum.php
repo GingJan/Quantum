@@ -1,9 +1,9 @@
 <?php
 namespace Zjien\Quantum;
 
-use Illuminate\Auth\Access\UnauthorizedException;
 use Illuminate\Foundation\Application;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class Quantum
 {
@@ -33,13 +33,13 @@ class Quantum
      * @param $uri
      * @param $method
      * @return bool
-     * @throws bool|UnauthorizedException|NotFoundHttpException
+     * @throws bool|UnauthorizedHttpException|NotFoundHttpException
      */
     public function check($uri, $method)
     {
         $user = $this->user();
         if (!$user) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedHttpException('');
         }
 
         $roles = $user->roles;
@@ -67,4 +67,5 @@ class Quantum
     {
         return $this->app->auth->user();
     }
+
 }
